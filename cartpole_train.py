@@ -5,7 +5,7 @@ CartPole simple state version
 This code is based on the official pytorch tutorial DQN code.
 "https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html"
 
-**Author** modified by Taewoo Kim <https://github.com/[my account]>
+**Author** modified by Taewoo Kim <https://github.com/go-blin>
 
 **changes**
 The original code takes images as an input state
@@ -15,7 +15,7 @@ as state. And some minor parts are modified.
 
 ===============================================================
 """
-
+# Commit and Push Test!!
 
 import gym
 import math
