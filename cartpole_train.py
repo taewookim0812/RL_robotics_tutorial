@@ -15,7 +15,6 @@ as state. And some minor parts are modified.
 
 ===============================================================
 """
-# Commit and Push Test!!
 
 import gym
 import math
@@ -47,6 +46,7 @@ plt.ion()
 
 # if gpu is to be used
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print('device: ', device)
 
 Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
@@ -201,7 +201,7 @@ def optimize_model():
     optimizer.step()
 
 
-save_dir = './model'
+save_dir = './model/CartPole'
 def save_model(num_episodes):
     # save model parameters
     if not os.path.exists(save_dir):
@@ -211,7 +211,7 @@ def save_model(num_episodes):
 
 
 total_num_steps = 0
-num_episodes = 101
+num_episodes = 100
 for i_episode in range(num_episodes):
     # Initialize the environment and state
     current_state = env.reset()

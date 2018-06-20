@@ -41,11 +41,9 @@ print(action_list)
 class reacher_DQN(nn.Module):
     def __init__(self):
         super(reacher_DQN, self).__init__()
-        self.fc1 = nn.Linear(11, 128)
-
-        self.fc2 = nn.Linear(128, 64)
-
-        self.head  = nn.Linear(64, len(action_list))
+        self.fc1 = nn.Linear(11, 200)
+        self.fc2 = nn.Linear(200, 150)
+        self.head  = nn.Linear(150, len(action_list))
 
         # weight initialization
         torch.nn.init.uniform_(self.fc1.weight, -0.003, 0.003)

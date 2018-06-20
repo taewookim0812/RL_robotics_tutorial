@@ -4,7 +4,6 @@ CartPole evaluation
 **Author** Taewoo Kim
 
 """
-# Commit and Push Test~~
 
 import gym
 import torch
@@ -15,7 +14,7 @@ from ModelDescriptor import cartpole_DQN
 
 env = gym.make('CartPole-v1')
 
-load_dir = './model'
+load_dir = './model/CartPole'
 num_epi = 100
 env_name = 'CartPole_epi' + str(num_epi) + '.pt'
 
