@@ -3,22 +3,17 @@ import math
 import random
 import numpy as np
 import matplotlib
-import matplotlib.pyplot as plt
 from collections import namedtuple
-from itertools import count
-from PIL import Image
 
 
 import torch
-import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-from torch.autograd import Variable
 import os
 
 
 # Custom library
-from ModelDescriptor import reacher_DQN
+from ModelDescriptor import reacher_DQN, action_list
 from DataPlotter import *
 
 
@@ -53,20 +48,6 @@ Transition = namedtuple('Transition',
                         ('state', 'action', 'next_state', 'reward'))
 
 
-action_range = [0.05, 0.01, 0.00, -0.01, -0.05]
-action_list = []
-for j in action_range:
-    temp = []
-    for i in action_range:
-        temp.append(j)
-        temp.append(i)
-        action_list.append(temp)
-        temp = []
-
-print(action_list)
-
-
-
 class ReplayMemory(object):
     def __init__(self, capacity):
         self.capacity = capacity
@@ -87,18 +68,6 @@ class ReplayMemory(object):
         return len(self.memory)
 
 
-# user-defined state
-# # [q1, q2, q1_dot, q2_dot, fx, fy, fz, tx, ty, tz]
-# def get_state():
-#     theta = env.sim.data.qpos.flat[:2]
-#     theta_dot = env.sim.data.qvel.flat[:2]
-#     finger = env.get_body_com("fingertip")
-#     target = env.get_body_com("target")
-#     state = np.concatenate((theta, theta_dot, finger, target))
-#     state = np.ascontiguousarray(state, dtype=np.float32)
-#     return torch.from_numpy(state).unsqueeze(0).type(Tensor)
-
-
 def get_state(state):
     state = np.ascontiguousarray(state, dtype=np.float64)
     state = torch.from_numpy(state).unsqueeze(0).type(
@@ -113,7 +82,7 @@ EPS_START = 0.9
 EPS_END = 0.05
 EPS_PERIOD = 150000
 EPS_DECAY = -EPS_PERIOD/math.log(EPS_END)
-TARGET_UPDATE = 200
+TARGET_UPDATE = 100
 LOG_INTERVAL = 100
 
 RHO = 1/2 - (1-EPS_START)   # amplitude for cos
@@ -168,10 +137,6 @@ savePath = './model/Reacher'
 def savePlots():
     if not os.path.exists(savePath):
         os.makedirs(savePath)
-    with open(savePath + '/Average_duration_per_Epi.txt', 'w') as f:
-        for s in episode_durations:
-            f.write(str(s) + '\n')
-
     with open(savePath + '/Average_reward_per_Epi.txt', 'w') as f:
         for s in episode_rewards:
             f.write(str(s) + '\n')
@@ -194,7 +159,7 @@ def save_model(num_episodes):
 
 
 def optimize_model():
-    if len(memory) < BATCH_SIZE * 10000:
+    if len(memory) < BATCH_SIZE * 1000:
         return
 
     transitions = memory.sample(BATCH_SIZE)
@@ -234,16 +199,13 @@ def optimize_model():
 
 
 
-REQ_START = 0.1
-REQ_END = 0.005
-REQ_PERIOD = 150000
-REQ_DECAY = -REQ_PERIOD/math.log(REQ_END)
 
 MODEL_SAVE_PERIOD = 1000
-requirement = 0.1
-total_num_steps = 1
-num_episodes = 2000000
+
+total_num_steps = 1000000
 num_steps_per_epi = 50
+num_episodes = round(total_num_steps / num_steps_per_epi)
+
 
 for i_episode in range(num_episodes):
     # Initialize the environment and state
@@ -252,8 +214,7 @@ for i_episode in range(num_episodes):
 
     # To see the progress of learning
     epi_rewards = 0
-    step_Q = []
-    step_errs = []
+    epi_errs = []
     for t in range(num_steps_per_epi):
         # Select and perform an action
         action = select_action(current_state)
@@ -268,19 +229,9 @@ for i_episode in range(num_episodes):
         err_dist = np.abs(info['reward_dist'])
         err_ctrl = np.abs(info['reward_ctrl'])
         # print('err_dist: ', err_dist, '  req: ', requirement, '  t: ', t)
-        step_errs.append(err_dist)
+        epi_errs.append(err_dist)
 
 
-        # if err_dist < requirement and err_ctrl < 0.05:    # TODO, target distance and velocity
-        #     done = True
-        #     reward += 0.1
-        #
-        # requirement = REQ_END + (REQ_START - REQ_END) * \
-        #               math.exp((-1. * total_num_steps + t) / REQ_DECAY)
-
-
-        # TODO, reward...
-        # reward = info['reward_dist']
         epi_rewards += reward
         reward = Tensor([reward])
 
@@ -293,9 +244,6 @@ for i_episode in range(num_episodes):
 
 
         # Store the transition in memory
-        # remove accumulated joint angle
-        # state[0, 0] %= (2*math.pi) if state[0, 0] >= 0 else -(2*math.pi)
-        # state[0, 1] %= (2*math.pi) if state[0, 1] >= 0 else -(2*math.pi)
         memory.push(current_state, action, next_state, reward)
 
         # Move to the next state
@@ -306,20 +254,14 @@ for i_episode in range(num_episodes):
         if done:
             break
 
-    total_num_steps += t
     # print('total step: ', total_num_steps, ' num_epi: ', i_episode)
 
     # plot
-    episode_durations.append(t + 1)
-    # mean10 = np.mean(episode_durations[-min(10, len(episode_durations)):])
     # print('num_epi: ', i_episode+1, '   mean10: ', mean10, '   requirement: ', requirement)
     episode_rewards.append(epi_rewards/max(t, 1))
-    # episode_rewards_step += step_rewards
     # plot_reward_step()
-    # episode_Err.append(np.mean(step_errs, dtype=np.float64))
-    # episode_Q.append(np.mean(step_Q, dtype=np.float64))
+    episode_Err.append(np.mean(epi_errs, dtype=np.float64))
 
-    # plot_durations()
     # plot_reward()
     # plot_Err()
     # plot_Q()
@@ -349,8 +291,7 @@ for i_episode in range(num_episodes):
     # Log interval
     if i_episode % LOG_INTERVAL == 0:
         print('Updates {}, num steps {}, epi reward {:.2f}'.
-              format(i_episode, total_num_steps, epi_rewards))
-
+              format(i_episode, steps_done, epi_rewards/max(t, 1)))
 
 
 print('Complete')
