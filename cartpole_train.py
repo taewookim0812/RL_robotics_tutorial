@@ -8,7 +8,7 @@ This code is based on the official pytorch tutorial DQN code.
 **Author** modified by Taewoo Kim <https://github.com/go-blin>
 
 **changes**
-The original code takes images as an input state
+The original code takes input state as image sequences,
 but in this code simple state of CartPole such as
 cart position, pole angle and its velocity is used
 as state. And some minor parts are modified.
