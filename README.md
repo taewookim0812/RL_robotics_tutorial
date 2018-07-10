@@ -4,6 +4,7 @@ This is a pytorch implementation of Reinforcement Learning for Robotics.
 Based on virtual simulation environments such as OpenAI Gym, Mujoco and pybullet,
 We implemented some examples of reinforcement learning for robotics using simple robots.
 Our official article will be contributed to the July issue of 2018 of the "Human and Robot" of KROS.
+The article is in "/document" folder.
 
 
 ## CartPole (OpenAI Gym)
@@ -18,12 +19,14 @@ While the original code learns from images, ours learns from simple state such l
 cartpole_train.py
 
 * Evaluation:
-cartpole_eval.py
+cartpole_eval.py__
 
 
 ## Reacher (Mujoco)
 
-![Reacher(Mujoco)](img/Reacher(Mujoco).png)
+<p align="center">
+    <img width="640" height="480" src=img/Reacher(Mujoco).png>
+</p>
 
 Mujoco simulator should be installed before you run the Reacher example. Mujoco simulator is not free, but you can freely use it for the first month.
 You can get free one-year license if you are a student and have a school e-mail(ac.kr).
