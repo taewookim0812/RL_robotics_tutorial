@@ -1,15 +1,22 @@
 # pytorch RL tutorial for Robotics
 
+* Youtube Link:
+<br />
+
+<br />
+
 This is a pytorch implementation of Reinforcement Learning for Robotics.
 Based on virtual simulation environments such as OpenAI Gym, Mujoco and pybullet,
 We implemented some examples of reinforcement learning for robotics using simple robots.
-Our official article will be contributed to the July issue of 2018 of the "Human and Robot" of KROS.
-The article is in "/document" folder.
+Our article will be contributed to the July issue of 2018 of the "Human and Robot" of KROS.
+[Here](https://github.com/gd-goblin/RL_robotics_tutorial/tree/master/document) is the article.
 
 
 ## CartPole (OpenAI Gym)
 
-![CartPole](img/cartpole.png)
+<p align="center">
+    <img width="640" height="480" src=img/cartpole.png.png>
+</p>
 
 Our CartPole implementation is based on the official tutorial code of pytorch ([CartPole DQN](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)),
 and some parts of the code are modified to simplify the problem.
@@ -19,8 +26,10 @@ While the original code learns from images, ours learns from simple state such l
 cartpole_train.py
 
 * Evaluation:
-cartpole_eval.py__
+cartpole_eval.py
 
+<br />
+<br />
 
 ## Reacher (Mujoco)
 
@@ -38,11 +47,14 @@ reacher_train.py
 * Evaluation:
 reacher_eval.py
 
-
+<br />
+<br />
 
 ## Reacher (pybullet)
 
-![Reacher(pybullet)](img/Reacher(pybullet).png)
+<p align="center">
+    <img width="640" height="480" src=img/Reacher(pybullet).png>
+</p>
 
 Based on ikostrikov's implementation(https://github.com/ikostrikov/pytorch-a2c-ppo-acktr),
 we organized pybullet simulator environment with Reacher robot same as Mujoco's using urdf format.

@@ -82,12 +82,15 @@ def update_current_obs(obs):
 
 obs = env.reset()
 update_current_obs(obs)
-
-
-actor_critic.set_hook_mode(True)
-epi_reward = 0.0
-pans = []
+# actor_critic.set_hook_mode(True)
 t = 0
+
+prev_q1 = 0
+prev_q2 = 0
+
+current_q1 = 0
+current_q2 = 0
+alpha = 0.8
 while True:
     with torch.no_grad():
         value, action, _, states, hidden_actor, hidden_critic = actor_critic.act(current_obs,
@@ -95,11 +98,21 @@ while True:
                                                     masks, deterministic=True)
     cpu_actions = action.squeeze(1).cpu().numpy()
 
+    current_q1 = cpu_actions[0][0]
+    current_q2 = cpu_actions[0][1]
+
+    cpu_actions[0][0] = current_q1 * alpha + prev_q1 * (1 - alpha)
+    cpu_actions[0][1] = current_q2 * alpha + prev_q2 * (1 - alpha)
+
     # cpu_actions = [[0, 0, 0.0001]]
 
     # Obser reward and next obs
     rst = env.step(cpu_actions[0])
     obs, reward, done, info = rst[args.env_name]
+
+
+    prev_q1 = current_q1
+    prev_q2 = current_q2
 
 
     dist_err = info[0]['reward_dist']
@@ -119,5 +132,6 @@ while True:
 
     time.sleep(0.02)
     t += 1
+
 
 
