@@ -15,7 +15,7 @@ Our article will be contributed to the July issue of 2018 of the "Human and Robo
 ## CartPole (OpenAI Gym)
 
 <p align="center">
-    <img width="640" height="480" src=img/cartpole.png.png>
+    <img width="640" height="480" src=img/cartpole.png>
 </p>
 
 Our CartPole implementation is based on the official tutorial code of pytorch ([CartPole DQN](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)),
