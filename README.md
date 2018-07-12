@@ -1,6 +1,8 @@
 # pytorch RL tutorial for Robotics
 
 * Youtube Link:
+(https://www.youtube.com/watch?v=gWaiMGr4Le8&t=2s)
+
 <br />
 
 <br />
@@ -8,8 +10,9 @@
 This is a pytorch implementation of Reinforcement Learning for Robotics.
 Based on virtual simulation environments such as OpenAI Gym, Mujoco and pybullet,
 We implemented some examples of reinforcement learning for robotics using simple robots.
-Our article will be contributed to the July issue of 2018 of the "Human and Robot" of KROS.
-[Here](https://github.com/gd-goblin/RL_robotics_tutorial/tree/master/document) is the article.
+Our article will be contributed to the July issue of 2018 of the "Human and Robot" of KROS
+and can be found
+[here](https://github.com/gd-goblin/RL_robotics_tutorial/tree/master/document).
 
 
 ## CartPole (OpenAI Gym)
@@ -39,7 +42,7 @@ cartpole_eval.py
 
 Mujoco simulator should be installed before you run the Reacher example. Mujoco simulator is not free, but you can freely use it for the first month.
 You can get free one-year license if you are a student and have a school e-mail(ac.kr).
-This implementation also uses DQN algorithm. PPO version can be found [here](https://github.com/ikostrikov/pytorch-a2c-ppo-acktr)
+This implementation also uses DQN algorithm. PPO version can be found [here](https://github.com/ikostrikov/pytorch-a2c-ppo-acktr).
 
 * Training:
 reacher_train.py
@@ -57,7 +60,7 @@ reacher_eval.py
 </p>
 
 Based on ikostrikov's implementation(https://github.com/ikostrikov/pytorch-a2c-ppo-acktr),
-we organized pybullet simulator environment with Reacher robot same as Mujoco's using urdf format.
+we organized pybullet simulation environment with Reacher robot same as Mujoco's using urdf format.
 
 * Training:
 pybullet_train_main.py
