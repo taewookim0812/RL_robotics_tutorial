@@ -1,11 +1,10 @@
 # pytorch RL tutorial for Robotics
 
-* Youtube Link:
+* Youtube:
 (https://www.youtube.com/watch?v=gWaiMGr4Le8&t=2s)
 
 <br />
 
-<br />
 
 This is a pytorch implementation of Reinforcement Learning for Robotics.
 Based on virtual simulation environments such as OpenAI Gym, Mujoco and pybullet,
